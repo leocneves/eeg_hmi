@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 import pandas as pd
 import numpy as np
+from scipy import signal
+
 
 class Processing:
     """docstring for Processing"""
     def __init__(self):
         data = 0
+
     def epoch(self,data,init_time,end,epoch,offset,time):
         # Def to slice a data frame into epochs
         self.window = data[(data['Time (s)']>=init_time) & (data['Time (s)']<=end)]  #making a epoch
@@ -24,6 +27,17 @@ class Processing:
                 aux = x
             return sla
 
+    def rms(self, a):
+        return np.sqrt(np.mean(np.square(a)))
+
+    def filter(self, x, lowcut, highcut, btype='bandpass', sampling_rate=512, order=4):
+        nyq = 0.5 * sampling_rate
+        low = lowcut / nyq
+        high = highcut / nyq
+        b, a = signal.butter(order, [low, high], btype=btype)
+        return signal.filtfilt(b, a, x)
+
+
 # USAGE
 # from processing.Processing import Processing
 # import pandas as pd
@@ -38,9 +52,5 @@ class Processing:
 # plt.show()
 
 # import matplotlib.pyplot as plt
-# plt.plot([1,2],[1,2])
-# plt.show()
 # plt.plot(w[0][:,0],w[0][:,1])
-# plt.show()
-# plt.plot(w[1][:,0],w[1][:,1])
 # plt.show()
