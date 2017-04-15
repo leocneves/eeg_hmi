@@ -37,6 +37,25 @@ class Processing:
         b, a = signal.butter(order, [low, high], btype=btype)
         return signal.filtfilt(b, a, x)
 
+    def ZeroCrossing(self, data, channel=1):
+        feature = list()
+        D=0
+        X1=0
+        X2=0
+        for x in data:
+            for z in range(2,len(x)):
+                if (x[z][channel] >= 0):
+                    X2 = 1
+                else:
+                    X2 = 0
+                if (x[z-1][channel]>= 0):
+                    X1 = 1
+                else:
+                    X1 = 0
+                D += np.square(X2 - X1)
+            feature.append(D)
+            D = 0
+        return feature
 
 # USAGE
 # from processing.Processing import Processing
@@ -45,7 +64,7 @@ class Processing:
 # x = Processing()
 # w = x.epoch(df,10,250,1,1,'true')
 
-#plot
+# plot
 # import matplotlib.pyplot as plt
 # plt.plot([1,2,3,4])
 # plt.ylabel('some numbers')
