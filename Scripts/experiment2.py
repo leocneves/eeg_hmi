@@ -14,6 +14,8 @@ from emokit.emotiv import Emotiv
 from docopt import docopt
 import os
 import time
+import numpy as np
+import subprocess
 
 class Experiment():
   def __init__(self, arguments):
@@ -28,6 +30,7 @@ class Experiment():
     self.rest_time = 10
     self.num_clips = 1
     self.count = 0
+    self.c = 0
 
     if self.args['mooth']:
       if (self.args['<state>'] == 'happiness'):
@@ -38,28 +41,32 @@ class Experiment():
         self.path = "~/Documents/eeg_hmi/dataset/neutral"
     else:
         print "default mooth: happiness setted!"
-      pass
+        pass
 
   def main(self):
-    with Emotiv(display_output=False, verbose=False, write=True, output_path="~/Documents/eeg_hmi/signals/"+str(self.args['<name>'])) as emotiv:
+    with Emotiv(display_output=False, verbose=False, write=True, output_path="/home/leonardo/Documents/eeg_hmi/signals") as emotiv:
+      self.time = time.time()
       while emotiv.running:
             try:
                 packet = emotiv.dequeue()
-                self.time = time.time()
+                print np.round((time.time()-self.time),0)
+                if (np.round((time.time()-self.time),2) == 0 and self.c == 0):
+                  # os.system("gnome-terminal -e 'bash -c \"cvlc --fullscreen --loop ~/Documents/eeg_hmi/dataset/black.jpg &; exec bash\"'")
+                  # os.system("cvlc --fullscreen --loop ~/Documents/eeg_hmi/dataset/black.jpg &")
+                  subprocess.Popen("cvlc --fullscreen --loop ~/Documents/eeg_hmi/dataset/black.jpg &", shell=True)
 
-                if (self.time == 0):
-                  os.system("cvlc --fullscreen --loop ~/Documents/eeg_hmi/dataset/black.jpg &")
+                if ((np.round((time.time()-self.time),0) == self.init_time+self.step)and self.c == 1):
+                  # os.system("gnome-terminal -e 'bash -c \"cvlc --fullscreen "+self.path+"/"+str(self.count)+".mp4 &; exec bash\"'")
+                  # os.system("cvlc --fullscreen "+self.path+"/"+str(self.count)+".mp4 &")
+                  subprocess.Popen("cvlc --fullscreen "+self.path+"/"+str(self.count)+".mp4 &", shell=True)
 
-                if (self.time == self.init_time+self.step):
-                  os.system("cvlc --fullscreen "+self.path+"/"+str(self.count)+".mp4 &")
-
-                if (self.time == (self.init_time+self.clip_time)+self.step):
+                if ((np.round((time.time()-self.time),0) == (self.init_time+self.clip_time)+self.step) and self.c == 2):
                   os.system("cvlc --fullscreen --loop ~/Documents/eeg_hmi/dataset/SAM.png &")
 
-                if (self.time == (self.init_time+self.clip_time+self.questions_time)+self.step):
+                if ((np.round((time.time()-self.time),0) == (self.init_time+self.clip_time+self.questions_time)+self.step)and self.c == 3):
                   os.system("cvlc --fullscreen --loop ~/Documents/eeg_hmi/dataset/black.jpg &")
 
-                if (self.time == (self.init_time+self.clip_time+self.questions_time+self.rest_time)+self.step):
+                if ((np.round((time.time()-self.time),0) == (self.init_time+self.clip_time+self.questions_time+self.rest_time)+self.step)and self.c == 4):
                   if (self.count < self.num_clips):
                     self.count+=1
                     self.step = self.step + (self.init_time+self.clip_time+self.questions_time+self.rest_time)
@@ -74,8 +81,8 @@ class Experiment():
 
 if __name__ == '__main__':
     arguments = docopt(__doc__, version='EEG HMI JUDITH 1.0')
-    # try:
-    exp = Experiment(arguments)
-    exp.main()
-    # except:
-      # print "ERROR"
+    try:
+      exp = Experiment(arguments)
+      exp.main()
+    except Exception as e:
+      print e
