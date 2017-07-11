@@ -23,6 +23,8 @@ class Processing:
         data = 0
 
     def epoch(self,data,init_time,end,epoch,offset,chanels):
+        # Def to slice a data frame into epochs
+
         time_col = list()
         reset_time = int(data['Timestamp'][0].split(' ')[1].split(':')[1])*60 + float(data['Timestamp'][0].split(' ')[1].split(':')[2])
         for t in data['Timestamp']:
@@ -30,7 +32,6 @@ class Processing:
             # time_col.append(time.strptime(t.split(' ')[1].split('.')[0],'%H:%M:%S'))
         data['Time (s)'] = time_col
 
-        # Def to slice a data frame into epochs
         self.window = data[(data['Time (s)']>=init_time) & (data['Time (s)']<=end)]  #making a epoch
         # print self.window
         self.names = list(data.keys())
@@ -41,9 +42,9 @@ class Processing:
         aux = 0
         sla = list()
         if ((end - init_time)%epoch) != 0:
-            return "OFFSET ERROR"
+            print "OFFSET ERROR"
         else:
-            for x in range(1,(int(np.round(max(self.window['Time (s)'])-init_time,1))+1),1):
+            for x in range(1,(int(np.round(max(self.window['Time (s)'])-init_time,2))+1),1):
                 sla.append(self.window[(self.window['Time (s)']>=init_time+aux) & (self.window['Time (s)']<init_time+x)].ix[:,index].values)
                 aux = x
             return sla
@@ -51,7 +52,7 @@ class Processing:
     def rms(self, a):
         return np.sqrt(np.mean(np.square(a)))
 
-    def filter(self, x, lowcut, highcut, btype='bandpass', sampling_rate=512, order=4):
+    def filter(self, x, lowcut, highcut, btype='bandpass', sampling_rate=128, order=4):
         nyq = 0.5 * sampling_rate
         low = lowcut / nyq
         high = highcut / nyq
