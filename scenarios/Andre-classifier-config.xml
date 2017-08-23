@@ -1,0 +1,23 @@
+<OpenViBE-Classifier-Box Creator="OpenViBE" CreatorVersion="1.3.0" FormatVersion="4">
+	<Strategy-Identifier class-id="(0xffffffff, 0xffffffff)">Native</Strategy-Identifier>
+	<Algorithm-Identifier class-id="(0x2ba17a3c, 0x1bd46d84)">Linear Discrimimant Analysis (LDA)</Algorithm-Identifier>
+	<Stimulations>
+		<Class-Stimulation class-id="0">OVTK_StimulationId_Label_01</Class-Stimulation>
+		<Class-Stimulation class-id="1">OVTK_StimulationId_Label_02</Class-Stimulation>
+	</Stimulations>
+	<OpenViBE-Classifier>
+		<LDA version="1">
+			<Classes>0 1 </Classes>
+			<Class-config-list>
+				<Class-config>
+					<Weights> -8.518002e+001 3.685362e+001 2.678070e+001 2.744814e+001 5.405853e+001 1.898948e+001 4.541413e+001 1.203113e+002 -1.203286e+001 3.277590e+001 8.771513e+001 -5.140900e+001 4.956191e+001 3.281131e-001 2.125141e+002 6.909922e+000 -4.161519e+001 -2.965905e+001 3.189420e+001 4.585412e+001 -1.261321e+002 1.362992e+002 -5.754635e+001 -4.286527e+001 -5.178781e+001 1.259024e+002 -4.509041e+001 -1.276622e+001 1.075965e+001 -2.453862e+000 -4.011995e+000 -1.341334e-001 -3.292380e+000 -3.839784e-002 -9.031838e+000 -2.827531e+001 3.839168e-001 -8.721768e-001 -1.562384e+000 4.458505e+000 -2.066782e+000 -6.055610e-003</Weights>
+					<Bias>-331.178</Bias>
+				</Class-config>
+				<Class-config>
+					<Weights> -8.585189e+001 3.639047e+001 2.746326e+001 2.707480e+001 5.499851e+001 1.906272e+001 4.650028e+001 1.240933e+002 -1.140484e+001 3.210918e+001 8.692220e+001 -5.111745e+001 4.845774e+001 8.477016e-001 2.112787e+002 7.919967e+000 -4.264417e+001 -2.858390e+001 3.444268e+001 4.452822e+001 -1.278167e+002 1.375309e+002 -5.962493e+001 -4.308282e+001 -5.125512e+001 1.278669e+002 -4.284822e+001 -1.303095e+001 1.083087e+001 -2.422060e+000 -4.130168e+000 -1.340690e-001 -3.303092e+000 -4.764540e-002 -9.123545e+000 -2.870356e+001 3.853627e-001 -8.589561e-001 -1.548670e+000 4.398565e+000 -2.044750e+000 -6.136689e-003</Weights>
+					<Bias>-333.345</Bias>
+				</Class-config>
+			</Class-config-list>
+		</LDA>
+	</OpenViBE-Classifier>
+</OpenViBE-Classifier-Box>
